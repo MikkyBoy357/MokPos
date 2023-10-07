@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/view/main_screen.dart';
 import 'package:mokpos/app/view/onboarding_screens/custom_button.dart';
+import 'package:mokpos/app/view/owner_screens/dashboard_screen.dart';
 import 'package:mokpos/app/view_model/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +11,20 @@ import '../../../widgets/back_button_black.dart';
 import '../../../widgets/email_text_field.dart';
 import '../../../widgets/password_field.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginAsOwnerScreen extends StatefulWidget {
+  const LoginAsOwnerScreen({super.key});
+
+  @override
+  State<LoginAsOwnerScreen> createState() => _LoginAsOwnerScreenState();
+}
+
+class _LoginAsOwnerScreenState extends State<LoginAsOwnerScreen> {
+  String otpMethod = "Email";
+
+  void changeOtpMethod(String val) {
+    otpMethod = val;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +69,38 @@ class LoginScreen extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 20),
-                Text(
-                  "Send OTP:",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    "Send OTP:",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
+                ),
+                SizedBox(height: 10),
+                CustomSmallButton(
+                  isSelected: otpMethod == "Email",
+                  label: "Email",
+                  icon: Icons.mail_outlined,
+                  onTap: () => changeOtpMethod("Email"),
+                ),
+                SizedBox(height: 10),
+                CustomSmallButton(
+                  isSelected: otpMethod == "SMS",
+                  label: "SMS",
+                  icon: Icons.message,
+                  onTap: () => changeOtpMethod("SMS"),
                 ),
                 SizedBox(height: 40),
                 Spacer(),
-                CustomButton(label: "Login"),
+                CustomButton(
+                  label: "Login",
+                  onTap: () {
+                    Constant.navigatePush(context, MainScreen());
+                  },
+                ),
                 SizedBox(height: 10),
                 Text(
                   "Forgot Password",
@@ -75,6 +110,7 @@ class LoginScreen extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                Spacer(),
                 SizedBox(height: 40),
               ],
             ),

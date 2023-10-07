@@ -10,6 +10,7 @@ extension ApplyComma on String {
 
 class Constant {
   static const assetImagePath = "assets/images/";
+  static const assetSvgPath = "assets/svg/";
   static void navigatePush(BuildContext context, Widget nextScreen) {
     Navigator.push(
       context,

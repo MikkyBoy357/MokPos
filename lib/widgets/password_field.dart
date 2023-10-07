@@ -63,7 +63,7 @@ class _PasswordFieldState extends State<PasswordField> {
                   setState(() {});
                 },
                 child: SvgPicture.asset(
-                  "${Constant.assetImagePath}eye.svg",
+                  "${Constant.assetSvgPath}eye.svg",
                   // color: color,
                   // width: width,
                   // height: height,

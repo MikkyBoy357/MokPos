@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mokpos/app/view/auth_screens/login_screen.dart';
+import 'package:mokpos/app/view/auth_screens/choose_login.dart';
+import 'package:mokpos/app/view/auth_screens/login_as_owner_screen.dart';
 import 'package:mokpos/app/view/auth_screens/sign_up_screen.dart';
 import 'package:mokpos/app/view/onboarding_screens/custom_button.dart';
 import 'package:mokpos/base/constant.dart';
@@ -23,7 +24,7 @@ class OnboardingScreen extends StatelessWidget {
             BlackIconButton(
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
-                child: SvgPicture.asset("${Constant.assetImagePath}union.svg"),
+                child: SvgPicture.asset("${Constant.assetSvgPath}union.svg"),
               ),
             ),
             SizedBox(width: 10),
@@ -77,7 +78,7 @@ class OnboardingScreen extends StatelessWidget {
             CustomOutlineButton(
               label: "Login",
               onTap: () {
-                Constant.navigatePush(context, LoginScreen());
+                Constant.navigatePush(context, ChooseLoginScreen());
               },
             ),
             SizedBox(height: 40),

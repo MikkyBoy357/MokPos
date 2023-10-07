@@ -64,3 +64,47 @@ class MyBackButton extends StatelessWidget {
     );
   }
 }
+
+class MyTextButton extends StatelessWidget {
+  final String label;
+  final EdgeInsetsGeometry? margin;
+  final Color? backgroundColor;
+  final Color? textColor;
+  final VoidCallback? onTap;
+
+  const MyTextButton({
+    super.key,
+    required this.label,
+    this.margin,
+    this.backgroundColor = Colors.black,
+    this.textColor = Colors.white,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: margin,
+        padding: EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
