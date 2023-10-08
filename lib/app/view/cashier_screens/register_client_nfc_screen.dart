@@ -106,7 +106,7 @@ class RegisterClientNfcScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Spacer(),
+            // Spacer(),
           ],
         ),
       ),

@@ -9,14 +9,24 @@ import 'package:provider/provider.dart';
 
 import '../../../widgets/password_field.dart';
 import '../../../widgets/phone_text_field.dart';
+import '../../view_model/auth/sign_up/register_view_model.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder: (context, authProvider, _) {
+    return Consumer<RegisterViewModel>(
+      builder: (context, registerViewModel, _) {
         return Scaffold(
           appBar: AppBar(
             leading: Column(
@@ -37,38 +47,56 @@ class SignUpScreen extends StatelessWidget {
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              children: [
-                SizedBox(height: 20),
-                EmailTextField(
-                  controller: authProvider.emailController2,
-                  onChanged: (String newVal) {
-                    authProvider.changeNotifiers();
-                  },
-                ),
-                SizedBox(height: 20),
-                PhoneTextField(
-                  controller: authProvider.phoneNumberController2,
-                  onChanged: (String newVal) {
-                    authProvider.changeNotifiers();
-                  },
-                ),
-                SizedBox(height: 20),
-                PasswordField(
-                  controller: authProvider.passwordController2,
-                  title: "Password",
-                  hintText: "at least 8 characters",
-                  onChanged: (String newVal) {
-                    authProvider.changeNotifiers();
-                  },
-                ),
-                SizedBox(height: 40),
-                CustomButton(label: "Sign up"),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  buildForm(registerViewModel, context),
+                  SizedBox(height: 40),
+                  CustomButton(
+                    label: "Sign up",
+                    onTap: () => registerViewModel.register(context),
+                  ),
+                ],
+              ),
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget buildForm(RegisterViewModel viewModel, BuildContext context) {
+    return Form(
+      key: viewModel.formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Column(
+        children: [
+          EmailTextField(
+            controller: emailController,
+            onChanged: (String val) {
+              viewModel.setEmail(val);
+            },
+          ),
+          SizedBox(height: 20),
+          PhoneTextField(
+            controller: phoneController,
+            onChanged: (String val) {
+              viewModel.setPhone(val);
+            },
+          ),
+          SizedBox(height: 20),
+          PasswordField(
+            controller: passController,
+            title: "Password",
+            hintText: "at least 8 characters",
+            onChanged: (String val) {
+              viewModel.setPassword(val);
+              viewModel.setConfirmPass(val);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

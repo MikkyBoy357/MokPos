@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +12,8 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User currentUser = FirebaseAuth.instance.currentUser!;
+
     return Drawer(
       backgroundColor: Colors.black,
       child: SafeArea(
@@ -47,6 +50,14 @@ class MyDrawer extends StatelessWidget {
                   SizedBox(height: 10),
                   Text(
                     "MyStoreName",
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    "${currentUser.email}",
                     style: TextStyle(
                       fontSize: 22,
                       color: Colors.white,

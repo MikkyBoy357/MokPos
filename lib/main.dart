@@ -1,9 +1,19 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/view/auth_screens/choose_login.dart';
+import 'package:mokpos/app/view/cashier_screens/cashier_home_screen.dart';
+import 'package:mokpos/app/view/cashier_screens/cashier_main_screen.dart';
 import 'package:mokpos/app/view/onboarding_screens/onboarding_screen.dart';
+import 'package:mokpos/app/view_model/user/user_view_model.dart';
+import 'package:mokpos/base/constant.dart';
+import 'package:mokpos/firebase_options.dart';
+import 'package:mokpos/util/providers/provider.dart';
 import 'package:provider/provider.dart';
 
+import 'app/view/main_screen.dart';
 import 'app/view_model/auth_provider.dart';
 import 'di/locator.dart';
 import 'local_storage/local_db.dart';
@@ -12,6 +22,10 @@ import 'local_storage/theme_db.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   await AppDependencies.register();
   await AppDataBaseService.startService();
@@ -49,9 +63,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-      ],
+      providers: providers,
       child: MaterialApp(
         title: 'MokPos',
         theme: ThemeData(
@@ -68,8 +80,48 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
         ),
-        home: const OnboardingScreen(),
+        home: buildHome(),
       ),
+    );
+  }
+
+  buildHome() {
+    return Consumer<UserViewModel>(
+      builder: (context, userViewModel, _) {
+        return StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+            print("Checking Snapshot data => ${snapshot}");
+            if (snapshot.hasData) {
+              print("Snapshot has data");
+              print(snapshot);
+              return FutureBuilder(
+                future: userViewModel.getUser(),
+                builder: (context, AsyncSnapshot dataSnapShot) {
+                  if (dataSnapShot.connectionState == ConnectionState.waiting) {
+                    return OnboardingScreen();
+                  } else {
+                    return Builder(builder: (context) {
+                      print(
+                          "======UserType====> ${userViewModel.user?.userType}");
+
+                      if (userViewModel.user?.userType == "owner") {
+                        // Constant.navigatePushReplacement(context, MainScreen());
+                        return MainScreen();
+                      } else {
+                        // Constant.navigatePushReplacement(context, CashierMainScreen());
+                        return CashierMainScreen();
+                      }
+                    });
+                  }
+                },
+              );
+            } else {
+              return OnboardingScreen();
+            }
+          },
+        );
+      },
     );
   }
 }

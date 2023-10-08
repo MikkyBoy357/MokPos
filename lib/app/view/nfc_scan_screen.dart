@@ -15,7 +15,7 @@ class NfcScanScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Spacer(),
+            // Spacer(),
             Center(
               child: CircleAvatar(
                 radius: 100,
@@ -73,7 +73,7 @@ class NfcScanScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            Spacer(),
+            // Spacer(),
           ],
         ),
       ),

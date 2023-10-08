@@ -67,7 +67,7 @@ class OnboardingScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Spacer(),
+            // Spacer(),
             CustomButton(
               label: "Create new account",
               onTap: () {

@@ -48,11 +48,11 @@ class _PasswordFieldState extends State<PasswordField> {
               validateFunction: Validations.validatePassword,
               textInputType: widget.textInputType,
               onChange: widget.onChanged,
-              textInputFormatters: [
-                LengthLimitingTextInputFormatter(
-                  6,
-                ), //6 is maximum number of characters you want in textfield
-              ],
+              // textInputFormatters: [
+              //   LengthLimitingTextInputFormatter(
+              //     8,
+              //   ), //6 is maximum number of characters you want in textfield
+              // ],
             ),
             Positioned(
               right: 15,

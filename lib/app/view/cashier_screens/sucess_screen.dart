@@ -16,7 +16,7 @@ class SuccessScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Spacer(),
+            // Spacer(),
             Center(
               child: CircleAvatar(
                 radius: 100,
@@ -55,7 +55,7 @@ class SuccessScreen extends StatelessWidget {
               backgroundColor: Colors.white,
               textColor: Colors.black,
             ),
-            Spacer(),
+            // Spacer(),
           ],
         ),
       ),

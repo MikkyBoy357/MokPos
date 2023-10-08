@@ -73,7 +73,7 @@ class ChooseLoginScreen extends StatelessWidget {
                 child: Image.asset("${Constant.assetImagePath}welcome.png"),
               ),
             ),
-            Spacer(),
+            // Spacer(),
             CustomButton(
               label: "Login as Owner",
               prefixWidget: Icon(
@@ -107,7 +107,7 @@ class ChooseLoginScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 40),
-            Spacer()
+            // Spacer()
           ],
         ),
       ),

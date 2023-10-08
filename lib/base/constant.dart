@@ -22,6 +22,17 @@ class Constant {
     );
   }
 
+  static void navigatePushReplacement(BuildContext context, Widget nextScreen) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return nextScreen;
+        },
+      ),
+    );
+  }
+
   static backToPrev(BuildContext context) {
     Navigator.of(context).pop();
   }

@@ -80,7 +80,7 @@ class AccountScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Spacer(),
+            // Spacer(),
             Container(
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.symmetric(vertical: 16),
