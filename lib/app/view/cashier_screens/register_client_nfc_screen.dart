@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mokpos/base/constant.dart';
 
 import '../../../widgets/back_button_black.dart';
 
@@ -115,9 +116,10 @@ class RegisterClientNfcScreen extends StatelessWidget {
         backgroundColor: Colors.red,
         onTap: () {
           // Constant.navigatePush(context, NfcScanScreen());
+          Constant.backToPrev(context);
         },
         margin: EdgeInsets.symmetric(horizontal: 20),
-        label: "NEXT ORDER",
+        label: "BACK",
       ),
     );
   }

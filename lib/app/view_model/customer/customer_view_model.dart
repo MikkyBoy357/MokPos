@@ -81,13 +81,22 @@ class CustomerViewModel extends ChangeNotifier {
     }
 
     // Proceed to debit customer account
-    debitCustomer(debitAmount: amount, customer: customerData!);
+    await debitCustomer(debitAmount: amount, customer: customerData!);
+
+    // Get customer data again to get updated wallet balance
+    await checkCustomerExist(context);
 
     stopLoading(context);
     Navigator.of(context).pop(context);
     notifyListeners();
 
-    Constant.navigatePush(context, SuccessScreen());
+    Constant.navigatePush(
+      context,
+      SuccessScreen(
+        title: "Transaction Success",
+        description: "NOTE: Do not forget to give smile to customers.",
+      ),
+    );
   }
 
   Future<void> debitCustomer({
