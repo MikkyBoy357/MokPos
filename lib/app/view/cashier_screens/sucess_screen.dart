@@ -17,6 +17,7 @@ class SuccessScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Spacer(),
+            SizedBox(height: 150),
             Center(
               child: CircleAvatar(
                 radius: 100,

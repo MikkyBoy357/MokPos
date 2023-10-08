@@ -41,7 +41,7 @@ class ShopGridCard extends StatelessWidget {
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: NetworkImage(
-                        "https://firebasestorage.googleapis.com/v0/b/oriri-dd0ec.appspot.com/o/posts%2F35d4e957-b67f-45f0-8e5f-0afe7d91621f.jpg?alt=media&token=9101f050-ee03-4fd7-8e72-1e1c746d4abd",
+                        "${shopItem.imageUrl}",
                       ),
                     ),
                   ),
@@ -53,7 +53,7 @@ class ShopGridCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Cottage Pie",
+                        "${shopItem.name}",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -78,7 +78,7 @@ class ShopGridCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\$10.99",
+                    "\$${shopItem.price}",
                     style: TextStyle(
                       color: Colors.green,
                       fontWeight: FontWeight.bold,

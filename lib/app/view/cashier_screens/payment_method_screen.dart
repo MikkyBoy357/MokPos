@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/view/nfc_scan_screen.dart';
 import 'package:mokpos/app/view_model/auth/shop/shop_view_model.dart';
+import 'package:mokpos/base/constant.dart';
 import 'package:mokpos/widgets/back_button_black.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +32,7 @@ class PaymentMethodScreen extends StatelessWidget {
                       children: [
                         Text("Total Bill:"),
                         Text(
-                          "Total Bill:",
+                          "\$${shopViewModel.totalPrice}",
                           style: TextStyle(
                             color: Colors.green,
                             fontSize: 20,
@@ -83,6 +85,9 @@ class PaymentMethodScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: MyTextButton(
+          onTap: () {
+            Constant.navigatePush(context, NfcScanScreen());
+          },
           margin: EdgeInsets.symmetric(horizontal: 16),
           label: "PAYER",
         ),
