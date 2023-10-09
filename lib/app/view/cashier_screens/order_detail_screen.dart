@@ -50,7 +50,7 @@ class OrderDetailScreen extends StatelessWidget {
                                 Text("${orderItem.name}"),
                               ],
                             ),
-                            Text("\$${orderItem.price}")
+                            Text("\$${orderItem.price! * orderItem.count!}")
                           ],
                         ),
                         SizedBox(height: 10),

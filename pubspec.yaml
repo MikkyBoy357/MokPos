@@ -52,6 +52,9 @@ dependencies:
   cloud_firestore: ^4.9.3
   uuid: ^4.1.0
 
+  # NFC
+  nfc_manager: ^3.3.0
+  sqflite: ^2.3.0
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/view/cashier_screens/cashier_main_screen.dart';
+import 'package:mokpos/app/view_model/auth/shop/shop_view_model.dart';
 import 'package:mokpos/app/view_model/customer/customer_view_model.dart';
 import 'package:mokpos/base/constant.dart';
 import 'package:mokpos/widgets/back_button_black.dart';
@@ -13,13 +15,13 @@ class SuccessScreen extends StatelessWidget {
   const SuccessScreen({
     super.key,
     this.title = "Successful Registered",
-    this.description = "NOTE: Do not forget to give smile to customers.",
+    this.description = "NOTE: Do not forget to smile for customers.",
   });
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CustomerViewModel>(
-        builder: (context, customerViewModel, _) {
+    return Consumer2<CustomerViewModel, ShopViewModel>(
+        builder: (context, customerViewModel, shopViewModel, _) {
       return Scaffold(
         backgroundColor: Colors.green,
         body: Padding(
@@ -64,7 +66,7 @@ class SuccessScreen extends StatelessWidget {
               MyTextButton(
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 label:
-                    "Balance : \$${customerViewModel.customerData!.walletBalance!.roundToDouble()}",
+                    "Balance : \$${customerViewModel.customerData?.walletBalance!.roundToDouble()}",
                 backgroundColor: Colors.white,
                 textColor: Colors.black,
               ),
@@ -75,10 +77,19 @@ class SuccessScreen extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: MyTextButton(
           onTap: () {
-            Constant.navigatePush(context, NfcScanScreen());
+            customerViewModel.resetcustomerData();
+            shopViewModel.clearCart();
+
+            Constant.navigatePushReplacement(
+              context,
+              WillPopScope(
+                onWillPop: () async => false,
+                child: CashierMainScreen(),
+              ),
+            );
           },
           margin: EdgeInsets.symmetric(horizontal: 20),
-          label: "NEXT ORDER",
+          label: "DONE",
         ),
       );
     });

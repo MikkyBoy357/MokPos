@@ -86,7 +86,7 @@ class PaymentMethodScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20.0),
         child: MyTextButton(
           onTap: () {
-            Constant.navigatePush(context, NfcScanScreen());
+            Constant.navigatePush(context, NfcScanScreen.withDependency());
           },
           margin: EdgeInsets.symmetric(horizontal: 16),
           label: "PAYER",

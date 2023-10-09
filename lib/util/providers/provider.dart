@@ -8,6 +8,7 @@ import '../../app/view_model/auth/change_password/change_password_view_model.dar
 import '../../app/view_model/auth/login/login_view_model.dart';
 import '../../app/view_model/auth/shop/shop_view_model.dart';
 import '../../app/view_model/user/user_view_model.dart';
+import '../../repository/repository.dart';
 
 List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (_) => AuthProvider()),
@@ -23,3 +24,11 @@ List<SingleChildWidget> providers = [
   ChangeNotifierProvider(create: (_) => ShopViewModel()),
   ChangeNotifierProvider(create: (_) => CustomerViewModel()),
 ];
+
+List<SingleChildWidget> getProvidersWithNfc(repo) {
+  var tempList = providers;
+  tempList.add(Provider<Repository>.value(
+    value: repo,
+  ));
+  return tempList;
+}

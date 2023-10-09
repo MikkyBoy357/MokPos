@@ -4,7 +4,7 @@ class UserModel {
   String? id;
   String? email;
   String? phone;
-  String? walletBalance;
+  num? walletBalance;
   String? userType;
 
   UserModel({
@@ -19,6 +19,7 @@ class UserModel {
     id = json['id'];
     email = json['email'];
     phone = json['phone'];
+    walletBalance = json['walletBalance'];
     userType = json['userType'];
   }
 
