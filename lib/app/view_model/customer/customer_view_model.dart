@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mokpos/app/model/customer_model.dart';
+import 'package:mokpos/app/view/cashier_screens/cashier_main_screen.dart';
 import 'package:mokpos/app/view/cashier_screens/sucess_screen.dart';
 import 'package:mokpos/app/view_model/user/user_view_model.dart';
 import 'package:mokpos/base/constant.dart';
@@ -16,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../nfc_model/record.dart';
+import '../../../nfc_model/write_record.dart';
 
 class CustomerViewModel extends ChangeNotifier {
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -32,9 +34,18 @@ class CustomerViewModel extends ChangeNotifier {
   CustomerModel? customerData;
   String? customerId;
 
+  double topupAmt = 0;
+  double minTopup = 200;
+
+  List<CustomerModel> customersList = [];
+
+  String tempCustomerId = "";
+  Iterable<WriteRecord> myRecordsIterable = [];
+
   bool isLoading = false;
 
-  Future<void> setTag(BuildContext context, NfcTag? _tag) async {
+  Future<void> checkTagForId(BuildContext context, NfcTag? _tag,
+      {required String actionType}) async {
     tag = _tag;
     if (tag == null) {
       print("======>WAHALA (Tag is NULL)<======");
@@ -65,13 +76,37 @@ class CustomerViewModel extends ChangeNotifier {
           customerId = splitList.last;
           print("======ID Found=====> ${customerId}");
           // await Future.delayed(Duration(seconds: 5));
-          await checkCustomerExist(context);
+          print("======ActionType=====> $actionType");
+          if (actionType == "payment") {
+            await checkCustomerExist(context);
+          } else if (actionType == "topup") {
+            await checkCustomerExist(context);
+          }
         } else {
           print("======ID NOT Found in First content=====> ${customerId}");
         }
       }
       notifyListeners();
     }
+  }
+
+  Future<void> handleWriteTag(BuildContext context, NfcTag? _tag,
+      {required String actionType}) async {}
+
+  Future<void> getCustomers() async {
+    print("====> Get Customers");
+    QuerySnapshot snapshot = await customersRef.get();
+    List<DocumentSnapshot> docs = snapshot.docs;
+
+    print(docs[0].data());
+    customersList.clear();
+    for (var doc in docs) {
+      final tempCus =
+          CustomerModel.fromJson(doc.data() as Map<String, dynamic>);
+      customersList.add(tempCus);
+    }
+
+    // print(tempcus);
   }
 
   void startLoading(BuildContext context) {
@@ -135,6 +170,7 @@ class CustomerViewModel extends ChangeNotifier {
             );
           },
         );
+        resetcustomerData();
         return;
       }
     }
@@ -160,19 +196,102 @@ class CustomerViewModel extends ChangeNotifier {
         ),
       ),
     );
+    // resetcustomerData();
+  }
+
+  Future<void> topupCustomerAccount(BuildContext context) async {
+    startLoading(context);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return LoadingDialog();
+      },
+    );
+
+    // Proceed to credit customer account and debit cashier
+    await creditCustomer(creditAmount: topupAmt, customer: customerData!);
+    await debitCashier(context, debitAmount: topupAmt, customer: customerData!);
+
+    // Get customer data again to get updated wallet balance
+    await checkCustomerExist(context);
+
+    stopLoading(context);
+    Navigator.of(context).pop(context);
+    notifyListeners();
+
+    Constant.navigatePush(
+      context,
+      WillPopScope(
+        onWillPop: () async => false,
+        child: SuccessScreen(
+          title: "Transaction Success",
+          description: "NOTE: Do not forget to smile for customers.",
+        ),
+      ),
+    );
+    resetcustomerData();
+  }
+
+  Future<void> creditCustomer({
+    required num creditAmount,
+    required CustomerModel customer,
+  }) async {
+    try {
+      DocumentReference docRef = await customersRef.doc(customer.id);
+
+      num newBalance = customer.walletBalance! + creditAmount;
+
+      await docRef.update({
+        "walletBalance": newBalance,
+      });
+    } catch (e) {
+      print("=======> Error on Credit Customer <=======");
+      print(e);
+    }
   }
 
   Future<void> debitCustomer({
     required num debitAmount,
     required CustomerModel customer,
   }) async {
-    DocumentReference docRef = await customersRef.doc(customer.id);
+    try {
+      DocumentReference docRef = await customersRef.doc(customer.id);
 
-    num newBalance = customer.walletBalance! - debitAmount;
+      num newBalance = customer.walletBalance! - debitAmount;
 
-    await docRef.update({
-      "walletBalance": newBalance,
-    });
+      await docRef.update({
+        "walletBalance": newBalance,
+      });
+    } catch (e) {
+      print("=======> Error on Debit Customer <=======");
+      print(e);
+    }
+  }
+
+  Future<void> debitCashier(
+    BuildContext context, {
+    required num debitAmount,
+    required CustomerModel customer,
+  }) async {
+    try {
+      UserViewModel userViewModel =
+          Provider.of<UserViewModel>(context, listen: false);
+
+      await userViewModel.getUser();
+
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      DocumentReference docRef = await usersRef.doc(currentUser!.uid);
+
+      print("MyUser => ${userViewModel.user!.walletBalance}");
+      num newBalance = userViewModel.user!.walletBalance! - debitAmount;
+
+      await docRef.update({
+        "walletBalance": newBalance,
+      });
+    } catch (e) {
+      print("=======> Error on Debit Cashier <=======");
+      print(e);
+    }
   }
 
   Future<void> creditCashier(
@@ -180,24 +299,39 @@ class CustomerViewModel extends ChangeNotifier {
     required num creditAmount,
     required CustomerModel customer,
   }) async {
-    UserViewModel userViewModel =
-        Provider.of<UserViewModel>(context, listen: false);
+    try {
+      UserViewModel userViewModel =
+          Provider.of<UserViewModel>(context, listen: false);
 
-    await userViewModel.getUser();
+      await userViewModel.getUser();
 
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    DocumentReference docRef = await usersRef.doc(currentUser!.uid);
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      DocumentReference docRef = await usersRef.doc(currentUser!.uid);
 
-    print("MyUser => ${userViewModel.user!.walletBalance}");
-    num newBalance = userViewModel.user!.walletBalance! + creditAmount;
+      print("MyUser => ${userViewModel.user!.walletBalance}");
+      num newBalance = userViewModel.user!.walletBalance! + creditAmount;
 
-    await docRef.update({
-      "walletBalance": newBalance,
-    });
+      await docRef.update({
+        "walletBalance": newBalance,
+      });
+    } catch (e) {
+      print("=======> Error on Credit Cashier <=======");
+      print(e);
+    }
   }
 
   void resetcustomerData() {
     customerData = null;
+    notifyListeners();
+  }
+
+  void setTopupAmt(String? val) {
+    if (val != null && val.isNotEmpty) {
+      topupAmt = double.parse(val);
+    } else {
+      topupAmt = 0.0;
+    }
+
     notifyListeners();
   }
 
@@ -208,6 +342,20 @@ class CustomerViewModel extends ChangeNotifier {
 
   void setEmail(val) {
     email = val;
+    notifyListeners();
+  }
+
+  Future<void> startRegisterCustomer() async {
+    tempCustomerId = Uuid().v4();
+    print("NewID => $tempCustomerId");
+
+    myRecordsIterable = [
+      WriteRecord(
+        id: 0,
+        record: NdefRecord.createText(tempCustomerId),
+      ),
+    ];
+
     notifyListeners();
   }
 
@@ -223,15 +371,14 @@ class CustomerViewModel extends ChangeNotifier {
     );
 
     try {
-      String tempId = Uuid().v1();
       CustomerModel tempCustomer = CustomerModel(
-        id: tempId,
+        id: tempCustomerId,
         email: email,
         name: name,
-        walletBalance: 0,
+        walletBalance: 0.0,
       );
 
-      await customersRef.doc(tempId).set(tempCustomer.toJson());
+      await customersRef.doc(tempCustomerId).set(tempCustomer.toJson());
     } catch (e) {
       print(e);
       print("Error adding new customer");
@@ -246,8 +393,15 @@ class CustomerViewModel extends ChangeNotifier {
       );
     }
 
+    tempCustomerId = "CustomerIdPlaceHolder";
     Navigator.of(context).pop(context);
     loading = false;
+
+    Constant.navigatePushReplacement(
+      context,
+      WillPopScope(onWillPop: () async => false, child: CashierMainScreen()),
+    );
+    resetcustomerData();
   }
 }
 

@@ -10,54 +10,14 @@ import '../../base/constant.dart';
 import '../../widgets/back_button_black.dart';
 import '../view_model/customer/customer_view_model.dart';
 import 'nfc_common/nfc_session.dart';
+import 'nfc_scan_screen.dart';
 
-class TagReadModel with ChangeNotifier {
-  NfcTag? tag;
-
-  Map<String, dynamic>? additionalData;
-
-  Future<String?> handleTag(
-    String actionType,
-    NfcTag tag,
-    BuildContext context,
-    Future<void> Function(BuildContext context, NfcTag tag,
-            {required String actionType})
-        afterFunction,
-  ) async {
-    this.tag = tag;
-    additionalData = {};
-
-    Object? tech;
-
-    print("===MyTAG===> ${tag.data}");
-    await afterFunction(context, tag, actionType: actionType);
-    // Provider.of<CustomerViewModel>(context, listen: false).setTag(context, tag);
-
-    // todo: more additional data
-    if (Platform.isIOS) {
-      tech = FeliCa.from(tag);
-      if (tech is FeliCa) {
-        final polling = await tech.polling(
-          systemCode: tech.currentSystemCode,
-          requestCode: FeliCaPollingRequestCode.noRequest,
-          timeSlot: FeliCaPollingTimeSlot.max1,
-        );
-        additionalData!['manufacturerParameter'] =
-            polling.manufacturerParameter;
-      }
-    }
-
-    notifyListeners();
-    return '[Tag - Read] is completed.';
-  }
-}
-
-class NfcScanScreen extends StatelessWidget {
-  const NfcScanScreen({super.key});
+class NfcScanScreenRegisterCustomer extends StatelessWidget {
+  const NfcScanScreenRegisterCustomer({super.key});
 
   static Widget withDependency() => ChangeNotifierProvider<TagReadModel>(
         create: (context) => TagReadModel(),
-        child: NfcScanScreen(),
+        child: NfcScanScreenRegisterCustomer(),
       );
 
   @override
@@ -66,7 +26,9 @@ class NfcScanScreen extends StatelessWidget {
       builder: (context, shopViewModel, customerViewModel, _) {
         return Scaffold(
           // backgroundColor: Colors.green,
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Text("Topup"),
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -82,10 +44,9 @@ class NfcScanScreen extends StatelessWidget {
                       return Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              SizedBox(width: 10),
                               Text("ID:"),
-                              SizedBox(height: 10),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width - 120,
                                 child: Text(
@@ -98,11 +59,12 @@ class NfcScanScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Name:"),
-                              SizedBox(height: 10),
+                              SizedBox(width: 10),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width - 120,
+                                width: MediaQuery.of(context).size.width - 110,
                                 child: Text(
                                   "${customerViewModel.customerData!.name}",
                                   softWrap: true,
@@ -134,7 +96,7 @@ class NfcScanScreen extends StatelessWidget {
                       handleTag: (tag) =>
                           Provider.of<TagReadModel>(context, listen: false)
                               .handleTag(
-                        "payment",
+                        "register",
                         tag,
                         context,
                         customerViewModel.checkTagForId,
@@ -173,7 +135,7 @@ class NfcScanScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 30),
                 Text(
-                  "Payer",
+                  "Recharger",
                   style: TextStyle(
                     // color: Colors.white,
                     fontSize: 22,
@@ -181,7 +143,7 @@ class NfcScanScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$${shopViewModel.totalPrice}",
+                  "\$${customerViewModel.topupAmt}",
                   style: TextStyle(
                     // color: Colors.white,
                     fontSize: 22,
@@ -226,13 +188,12 @@ class NfcScanScreen extends StatelessWidget {
             } else {
               return MyTextButton(
                 onTap: () {
-                  customerViewModel.makePayment(context,
-                      amount: shopViewModel.totalPrice);
-                  // Constant.navigatePush(context, NfcScanScreen());
+                  customerViewModel.topupCustomerAccount(context);
+                  // Constant.navigatePush(context, NfcScanScreenRegisterCustomer());
                 },
                 backgroundColor: Colors.green,
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                label: "Confirm User and Pay",
+                label: "Confirm Recharge",
               );
             }
           }),

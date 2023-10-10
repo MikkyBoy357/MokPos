@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mokpos/app/view/cashier_screens/add_customer_screen.dart';
 import 'package:mokpos/app/view/cashier_screens/register_client_nfc_screen.dart';
+import 'package:mokpos/app/view/nfc_scan_screen_register_customer.dart';
 import 'package:mokpos/app/view_model/customer/customer_view_model.dart';
 import 'package:mokpos/base/constant.dart';
 import 'package:mokpos/widgets/back_button_black.dart';
@@ -34,33 +35,41 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CustomerViewModel>(
-        builder: (context, customerViewModel, _) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text("Add New Customer"),
-        ),
-        drawer: MyDrawer(),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              buildForm(context, customerViewModel),
-              SizedBox(height: 20),
-            ],
+      builder: (context, customerViewModel, _) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text("Add New Customer"),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: MyTextButton(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          label: "SAVE",
-          backgroundColor: Colors.green,
-          onTap: () {
-            Constant.navigatePush(context, RegisterClientNfcScreen());
-          },
-        ),
-      );
-    });
+          // drawer: MyDrawer(),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                buildForm(context, customerViewModel),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: MyTextButton(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            label: "PROCEED",
+            backgroundColor: Colors.green,
+            onTap: () {
+              if (customerViewModel.email.isNotEmpty &&
+                  customerViewModel.name.isNotEmpty) {
+                Constant.navigatePush(
+                    context, RegisterClientNfcScreen.withDependency());
+              } else {
+                print("Invalid Form");
+              }
+            },
+          ),
+        );
+      },
+    );
   }
 
   Widget buildForm(BuildContext context, CustomerViewModel viewModel) {
@@ -71,7 +80,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
         children: [
           NameTextField(
             title: "Name",
-            hintText: "ABC23654",
+            hintText: "John Doe",
             controller: nameController,
             onChanged: (String val) {
               viewModel.setName(val);

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/view/cashier_screens/customer_list_screen.dart';
 import 'package:mokpos/app/view/owner_screens/dashboard_screen.dart';
 import 'package:mokpos/widgets/bottom_bar.dart';
 
@@ -15,7 +16,7 @@ class CashierMainScreen extends StatefulWidget {
 }
 
 class _CashierMainScreenState extends State<CashierMainScreen> {
-  int _selectedItem = 1;
+  int _selectedItem = 0;
   late String uid;
   PageController _pageController = PageController(initialPage: 0);
   @override
@@ -37,8 +38,8 @@ class _CashierMainScreenState extends State<CashierMainScreen> {
         },
         children: [
           CashierHomeScreen(),
-          Text("Checking"),
-          Text("Customers"),
+          // Text("Checking"),
+          CustomerListScreen(),
         ],
         controller: _pageController,
       ),

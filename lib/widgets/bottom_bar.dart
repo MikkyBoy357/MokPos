@@ -19,13 +19,13 @@ class BottomBar extends StatelessWidget {
       selectedItemColor: Colors.black,
       items: [
         BottomNavigationBarItem(
-          label: "Checking",
+          label: "Home",
           icon: Icon(Icons.home),
         ),
-        BottomNavigationBarItem(
-          label: "Dashboard",
-          icon: Icon(Icons.shopping_cart),
-        ),
+        // BottomNavigationBarItem(
+        //   label: "Dashboard",
+        //   icon: Icon(Icons.shopping_cart),
+        // ),
         BottomNavigationBarItem(
           label: "Customers",
           icon: Icon(CupertinoIcons.profile_circled),

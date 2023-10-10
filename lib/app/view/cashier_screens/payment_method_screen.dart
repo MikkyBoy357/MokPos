@@ -63,12 +63,12 @@ class PaymentMethodScreen extends StatelessWidget {
                           SizedBox(height: 20),
                           Container(
                             height: 70,
-                            width: 120,
+                            width: 130,
                             color: Color(0xFFA7F673),
                             child: Center(
                               child: Text(
                                 "Cashless",
-                                style: TextStyle(fontSize: 22),
+                                style: TextStyle(fontSize: 16),
                               ),
                             ),
                           ),

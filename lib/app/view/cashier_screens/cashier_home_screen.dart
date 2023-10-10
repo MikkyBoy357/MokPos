@@ -170,12 +170,20 @@ class _CashierHomeScreenState extends State<CashierHomeScreen> {
                     ),
                   ),
                   // Spacer(),
-                  Text(
-                    "Total: \$${shopViewModel.totalPrice}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        "Total: \$${shopViewModel.totalPrice}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right,
+                        color: Colors.white,
+                      ),
+                    ],
                   ),
                 ],
               ),
