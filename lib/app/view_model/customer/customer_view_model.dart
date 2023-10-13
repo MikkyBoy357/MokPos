@@ -1,13 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mokpos/app/model/customer_model.dart';
 import 'package:mokpos/app/view/cashier_screens/cashier_main_screen.dart';
 import 'package:mokpos/app/view/cashier_screens/sucess_screen.dart';
+import 'package:mokpos/app/view/topup_screens/topup_main_screen.dart';
+import 'package:mokpos/app/view_model/employee/employee_view_model.dart';
 import 'package:mokpos/app/view_model/user/user_view_model.dart';
 import 'package:mokpos/base/constant.dart';
+import 'package:mokpos/services/wallet_services.dart';
 import 'package:mokpos/util/extensions/extensions.dart';
 import 'package:mokpos/util/firebase/firebase.dart';
 import 'package:mokpos/widgets/error_dialog.dart';
@@ -20,6 +22,8 @@ import '../../../nfc_model/record.dart';
 import '../../../nfc_model/write_record.dart';
 
 class CustomerViewModel extends ChangeNotifier {
+  WalletService walletService = WalletService();
+
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validate = false;
@@ -149,6 +153,9 @@ class CustomerViewModel extends ChangeNotifier {
     BuildContext context, {
     required double amount,
   }) async {
+    EmployeeViewModel employeeViewModel =
+        Provider.of<EmployeeViewModel>(context, listen: false);
+
     startLoading(context);
     showDialog(
       context: context,
@@ -177,7 +184,9 @@ class CustomerViewModel extends ChangeNotifier {
 
     // Proceed to debit customer account
     await debitCustomer(debitAmount: amount, customer: customerData!);
-    await creditCashier(context, creditAmount: amount, customer: customerData!);
+    await walletService.creditEmployee(context,
+        employeeCode: "${employeeViewModel.loggedInEmployee?.employeeCode}",
+        creditAmount: amount);
 
     // Get customer data again to get updated wallet balance
     await checkCustomerExist(context);
@@ -200,6 +209,9 @@ class CustomerViewModel extends ChangeNotifier {
   }
 
   Future<void> topupCustomerAccount(BuildContext context) async {
+    EmployeeViewModel employeeViewModel =
+        Provider.of<EmployeeViewModel>(context, listen: false);
+
     startLoading(context);
     showDialog(
       context: context,
@@ -210,9 +222,13 @@ class CustomerViewModel extends ChangeNotifier {
 
     // Proceed to credit customer account and debit cashier
     await creditCustomer(creditAmount: topupAmt, customer: customerData!);
-    await debitCashier(context, debitAmount: topupAmt, customer: customerData!);
+    await walletService.debitEmployee(
+      context,
+      debitAmount: topupAmt,
+      employeeCode: "${employeeViewModel.loggedInEmployee?.employeeCode}",
+    );
 
-    // Get customer data again to get updated wallet balance
+    // Get customer data agai n to get updated wallet balance
     await checkCustomerExist(context);
 
     stopLoading(context);
@@ -229,7 +245,7 @@ class CustomerViewModel extends ChangeNotifier {
         ),
       ),
     );
-    resetcustomerData();
+    // resetcustomerData();
   }
 
   Future<void> creditCustomer({
@@ -264,58 +280,6 @@ class CustomerViewModel extends ChangeNotifier {
       });
     } catch (e) {
       print("=======> Error on Debit Customer <=======");
-      print(e);
-    }
-  }
-
-  Future<void> debitCashier(
-    BuildContext context, {
-    required num debitAmount,
-    required CustomerModel customer,
-  }) async {
-    try {
-      UserViewModel userViewModel =
-          Provider.of<UserViewModel>(context, listen: false);
-
-      await userViewModel.getUser();
-
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      DocumentReference docRef = await usersRef.doc(currentUser!.uid);
-
-      print("MyUser => ${userViewModel.user!.walletBalance}");
-      num newBalance = userViewModel.user!.walletBalance! - debitAmount;
-
-      await docRef.update({
-        "walletBalance": newBalance,
-      });
-    } catch (e) {
-      print("=======> Error on Debit Cashier <=======");
-      print(e);
-    }
-  }
-
-  Future<void> creditCashier(
-    BuildContext context, {
-    required num creditAmount,
-    required CustomerModel customer,
-  }) async {
-    try {
-      UserViewModel userViewModel =
-          Provider.of<UserViewModel>(context, listen: false);
-
-      await userViewModel.getUser();
-
-      User? currentUser = FirebaseAuth.instance.currentUser;
-      DocumentReference docRef = await usersRef.doc(currentUser!.uid);
-
-      print("MyUser => ${userViewModel.user!.walletBalance}");
-      num newBalance = userViewModel.user!.walletBalance! + creditAmount;
-
-      await docRef.update({
-        "walletBalance": newBalance,
-      });
-    } catch (e) {
-      print("=======> Error on Credit Cashier <=======");
       print(e);
     }
   }
@@ -379,6 +343,7 @@ class CustomerViewModel extends ChangeNotifier {
       );
 
       await customersRef.doc(tempCustomerId).set(tempCustomer.toJson());
+      print("=====> New customer added successfully!!!");
     } catch (e) {
       print(e);
       print("Error adding new customer");
@@ -399,8 +364,18 @@ class CustomerViewModel extends ChangeNotifier {
 
     Constant.navigatePushReplacement(
       context,
-      WillPopScope(onWillPop: () async => false, child: CashierMainScreen()),
+      WillPopScope(onWillPop: () async => false, child: TopupMainScreen()),
     );
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SuccessDialog(
+          text: "Customer was registered successfully",
+        );
+      },
+    );
+
     resetcustomerData();
   }
 }

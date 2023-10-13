@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BottomBar extends StatelessWidget {
+class TopupBottomBar extends StatelessWidget {
   final int currentIndex;
   final void Function(int index) onTap;
-  const BottomBar({
+  const TopupBottomBar({
     Key? key,
     required this.currentIndex,
     required this.onTap,
@@ -22,14 +22,14 @@ class BottomBar extends StatelessWidget {
           label: "Home",
           icon: Icon(Icons.home),
         ),
-        // BottomNavigationBarItem(
-        //   label: "Dashboard",
-        //   icon: Icon(Icons.shopping_cart),
-        // ),
         BottomNavigationBarItem(
-          label: "Employees",
-          icon: Icon(CupertinoIcons.profile_circled),
+          label: "Dashboard",
+          icon: Icon(Icons.shopping_cart),
         ),
+        // BottomNavigationBarItem(
+        //   label: "Employees",
+        //   icon: Icon(CupertinoIcons.profile_circled),
+        // ),
       ],
     );
   }

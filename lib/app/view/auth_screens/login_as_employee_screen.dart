@@ -4,6 +4,7 @@ import 'package:mokpos/app/view/onboarding_screens/custom_button.dart';
 import 'package:mokpos/app/view_model/auth/login/login_view_model.dart';
 import 'package:mokpos/app/view_model/auth_provider.dart';
 import 'package:mokpos/widgets/name_text_field.dart';
+import 'package:mokpos/widgets/number_text_field.dart';
 import 'package:provider/provider.dart';
 
 import '../../../base/constant.dart';
@@ -22,7 +23,7 @@ class LoginAsEmployeeScreen extends StatefulWidget {
 class _LoginAsEmployeeScreenState extends State<LoginAsEmployeeScreen> {
   String otpMethod = "Email";
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
   TextEditingController passController = TextEditingController();
 
   void changeOtpMethod(String val) {
@@ -64,7 +65,7 @@ class _LoginAsEmployeeScreenState extends State<LoginAsEmployeeScreen> {
                   CustomButton(
                     label: "Login",
                     onTap: () {
-                      loginProvider.login(context, "Cashier");
+                      loginProvider.loginAsCashier(context);
                     },
                   ),
                   SizedBox(height: 40),
@@ -94,12 +95,12 @@ class _LoginAsEmployeeScreenState extends State<LoginAsEmployeeScreen> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
-          EmailTextField(
-            title: "Cashier Email",
-            hintText: "mail@email.com",
-            controller: emailController,
+          NumberTextField(
+            title: "Employee Code",
+            hintText: "0000",
+            controller: codeController,
             onChanged: (String val) {
-              viewModel.setEmail(val);
+              viewModel.setCode(val);
             },
           ),
           SizedBox(height: 20),

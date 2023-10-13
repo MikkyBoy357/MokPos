@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,10 @@ import '../../../../base/constant.dart';
 import '../../../../base/validation.dart';
 import '../../../../services/auth_service.dart';
 import '../../../../widgets/loading_dialog.dart';
+import '../../../model/employee_model.dart';
 import '../../../view/main_screen.dart';
+import '../../../view/topup_screens/topup_main_screen.dart';
+import '../../employee/employee_view_model.dart';
 
 class LoginViewModel extends ChangeNotifier {
   bool isLoading = false;
@@ -19,7 +24,7 @@ class LoginViewModel extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validate = false;
   bool loading = false;
-  String email = "", password = "";
+  String email = "", password = "", code = "";
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
   AuthService auth = AuthService();
@@ -62,6 +67,53 @@ class LoginViewModel extends ChangeNotifier {
                 userType == "Cashier" ? CashierMainScreen() : MainScreen(),
           ),
         );
+      }
+    } catch (e) {
+      loading = false;
+      notifyListeners();
+      print("Login Error");
+      print("Email: $email");
+      print("Pass: $password");
+      print(e);
+      showInSnackBar('${auth.handleFirebaseAuthError(e.toString())}', context);
+    }
+    loading = false;
+    notifyListeners();
+
+    Provider.of<UserViewModel>(context, listen: false).getUser();
+    // }
+  }
+
+  loginAsCashier(BuildContext context) async {
+    FormState form = formKey.currentState!;
+    loading = true;
+    notifyListeners();
+    print("Try Login as Employee");
+    print(email);
+    print(password);
+    try {
+      bool success = await auth.loginEmloyee(context,
+          employeeCode: code, password: password);
+
+      print("Login Employee Pass");
+      print(success);
+
+      final EmployeeModel? loggedInEmployee =
+          Provider.of<EmployeeViewModel>(context, listen: false)
+              .loggedInEmployee;
+      if (success) {
+        Navigator.of(context).pushReplacement(
+          CupertinoPageRoute(
+            builder: (_) => WillPopScope(
+              onWillPop: () async => false,
+              child: loggedInEmployee?.employeeType.toString() == "cashier"
+                  ? CashierMainScreen()
+                  : TopupMainScreen(),
+            ),
+          ),
+        );
+      } else {
+        print("invalid code or password");
       }
     } catch (e) {
       loading = false;
@@ -134,6 +186,11 @@ class LoginViewModel extends ChangeNotifier {
 
   setPassword(val) {
     password = val;
+    notifyListeners();
+  }
+
+  setCode(val) {
+    code = val;
     notifyListeners();
   }
 

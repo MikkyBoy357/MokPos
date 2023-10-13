@@ -3,7 +3,7 @@ import 'package:mokpos/app/model/shop_item_model.dart';
 import 'package:mokpos/app/view/cashier_screens/add_customer_screen.dart';
 import 'package:mokpos/app/view/cashier_screens/customer_list_screen.dart';
 import 'package:mokpos/app/view/cashier_screens/register_client_nfc_screen.dart';
-import 'package:mokpos/app/view_model/auth/shop/shop_view_model.dart';
+import 'package:mokpos/app/view_model/shop/shop_view_model.dart';
 import 'package:mokpos/base/constant.dart';
 import 'package:mokpos/widgets/back_button_black.dart';
 import 'package:provider/provider.dart';
@@ -37,15 +37,6 @@ class _CashierHomeScreenState extends State<CashierHomeScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text("Cashier"),
-            actions: [
-              MyTextButton(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                onTap: () {
-                  Constant.navigatePush(context, AddCustomerScreen());
-                },
-                label: "Add Customer",
-              ),
-            ],
           ),
           drawer: MyDrawer(),
           body: SingleChildScrollView(

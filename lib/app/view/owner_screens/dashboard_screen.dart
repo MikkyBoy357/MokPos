@@ -23,42 +23,55 @@ class DashboardScreen extends StatelessWidget {
           drawer: MyDrawer(),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              children: [
-                SizedBox(height: 40),
-                ListView.separated(
-                  itemCount: dasboardItems.length,
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) => SizedBox(height: 20),
-                  itemBuilder: (context, index) {
-                    String mySubtitle = "";
-                    if (index == 0) {
-                      mySubtitle =
-                          "\$${userViewModel.user?.walletBalance}".asAmount();
-                    } else if (index == 1) {
-                      mySubtitle =
-                          "\$${userViewModel.user?.principalWalletBalance}"
-                              .asAmount();
-                    } else if (index == 2) {
-                      mySubtitle =
-                          "\$${userViewModel.topupWalletsTotal}".asAmount();
-                    } else if (index == 3) {
-                      mySubtitle =
-                          "\$${userViewModel.cashierWalletsTotal}".asAmount();
-                    } else if (index == 4) {
-                      mySubtitle =
-                          "\$${userViewModel.customerWalletsTotal}".asAmount();
-                    } else {
-                      mySubtitle = "ERROR";
-                    }
-                    return DashboardCard(
-                      title: mySubtitle,
-                      subtitle: dasboardItems[index].subtitle,
-                      svgPath: dasboardItems[index].svgPath,
-                    );
-                  },
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 40),
+                  FutureBuilder(
+                    future: userViewModel.getDashboardValues(),
+                    builder: (context, AsyncSnapshot asyncSnapshot) {
+                      return ListView.separated(
+                        itemCount: dasboardItems.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: 20),
+                        itemBuilder: (context, index) {
+                          String mySubtitle = "";
+                          if (index == 0) {
+                            mySubtitle =
+                                "\$${userViewModel.user?.walletBalance}"
+                                    .asAmount();
+                          } else if (index == 1) {
+                            mySubtitle =
+                                "\$${userViewModel.user?.principalWalletBalance}"
+                                    .asAmount();
+                          } else if (index == 2) {
+                            mySubtitle = "\$${userViewModel.topupWalletsTotal}"
+                                .asAmount();
+                          } else if (index == 3) {
+                            mySubtitle =
+                                "\$${userViewModel.cashierWalletsTotal}"
+                                    .asAmount();
+                          } else if (index == 4) {
+                            mySubtitle =
+                                "\$${userViewModel.customerWalletsTotal}"
+                                    .asAmount();
+                          } else {
+                            mySubtitle = "ERROR";
+                          }
+
+                          return DashboardCard(
+                            title: mySubtitle,
+                            subtitle: dasboardItems[index].subtitle,
+                            svgPath: dasboardItems[index].svgPath,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );

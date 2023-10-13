@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mokpos/app/model/employee_model.dart';
+import 'package:mokpos/app/view_model/employee/employee_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../app/view_model/user/user_view_model.dart';
@@ -61,6 +62,40 @@ class WalletService {
       });
     } catch (e) {
       print("=======> Error on Credit Owner <=======");
+      print(e);
+    }
+  }
+
+  Future<void> debitEmployee(
+    BuildContext context, {
+    required String employeeCode,
+    required double debitAmount,
+  }) async {
+    print("=======> Error Debit Employee <=======");
+    print("===> DebitAmount: $debitAmount");
+
+    try {
+      EmployeeViewModel employeeViewModel =
+          Provider.of<EmployeeViewModel>(context, listen: false);
+
+      // await userViewModel.getEmployeeList(forced: true);
+
+      DocumentReference docRef = employeesRef.doc(employeeCode);
+
+      DocumentSnapshot<Object?> snap =
+          await employeesRef.doc(employeeCode).get();
+      final tempEmployee = snap.data() as Map<String, dynamic>;
+
+      EmployeeModel currentEmployee = EmployeeModel.fromJson(tempEmployee);
+
+      print("CurrentEmployee => ${currentEmployee.walletBalance}");
+      num newBalance = currentEmployee.walletBalance! + debitAmount;
+
+      await docRef.update({
+        "walletBalance": newBalance,
+      });
+    } catch (e) {
+      print("=======> Error on Debit Employee <=======");
       print(e);
     }
   }

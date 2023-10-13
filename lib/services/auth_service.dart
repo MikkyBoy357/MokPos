@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/model/employee_model.dart';
+import 'package:mokpos/app/view_model/employee/employee_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../app/view_model/user/user_view_model.dart';
@@ -57,6 +61,37 @@ class AuthService {
     } else {
       return false;
     }
+  }
+
+  Future<bool> loginEmloyee(BuildContext context,
+      {required String employeeCode, required String password}) async {
+    print("==========> Login as Employee <=========");
+    bool success = false;
+
+    DocumentSnapshot<Object?> snap = await employeesRef.doc(employeeCode).get();
+
+    if (!snap.exists) {
+      print("Employee with code ${employeeCode} does not exist");
+      success = false;
+      return false;
+    } else {
+      final tempEmployee = snap.data() as Map<String, dynamic>;
+      final tempObject = EmployeeModel.fromJson(tempEmployee);
+
+      if (tempObject.employeeCode == employeeCode &&
+          tempObject.password == password) {
+        print("code and password are correct");
+        Provider.of<EmployeeViewModel>(context, listen: false)
+            .loggedInEmployee = tempObject;
+
+        success = true;
+      } else {
+        print("code or password is INCORRECT");
+        success = false;
+      }
+    }
+
+    return success;
   }
 
   forgotPassword(String email) async {

@@ -6,6 +6,7 @@ import 'package:mokpos/app/view_model/customer/customer_view_model.dart';
 import 'package:mokpos/base/constant.dart';
 import 'package:mokpos/widgets/back_button_black.dart';
 import 'package:mokpos/widgets/email_text_field.dart';
+import 'package:mokpos/widgets/employee_drawer.dart';
 import 'package:mokpos/widgets/phone_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           appBar: AppBar(
             title: Text("Add New Customer"),
           ),
-          // drawer: MyDrawer(),
+          drawer: EmployeeDrawer(),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
@@ -74,7 +75,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
 
   Widget buildForm(BuildContext context, CustomerViewModel viewModel) {
     return Form(
-      key: viewModel.formKey,
+      // key: viewModel.formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [

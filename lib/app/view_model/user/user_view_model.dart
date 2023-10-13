@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/model/customer_model.dart';
 import 'package:mokpos/app/model/employee_model.dart';
 import 'package:mokpos/app/model/user_model.dart';
 import 'package:mokpos/base/constant.dart';
@@ -88,7 +89,7 @@ class UserViewModel extends ChangeNotifier {
   Future<void> getUser({bool isForced = false}) async {
     if (!isInitialized || isForced) {
       DocumentSnapshot<Object?> doc =
-          await usersRef.doc(auth.currentUser!.uid).get();
+          await usersRef.doc(auth.currentUser?.uid).get();
 
       if (doc.exists) {
         var tempUser = doc.data() as Map<String, dynamic>;
@@ -96,7 +97,7 @@ class UserViewModel extends ChangeNotifier {
 
         user = UserModel.fromJson(tempUser);
       } else {
-        print("User doesn't exist");
+        print("Dash => User doesn't exist");
       }
       isInitialized = true;
     }
@@ -215,6 +216,62 @@ class UserViewModel extends ChangeNotifier {
     if (forced) {
       notifyListeners();
     }
+  }
+
+  Future<void> getDashboardValues() async {
+    print("=======> Getting Dashboard Values <=======");
+
+    QuerySnapshot<Object?> snap = await employeesRef.get();
+    QuerySnapshot<Object?> customerSnap = await customersRef.get();
+
+    // Add all cashiers to a list
+    List<EmployeeModel> tempCashiers = [];
+    List<EmployeeModel> tempTopups = [];
+    List<CustomerModel> tempCustomers = [];
+
+    for (var doc in snap.docs) {
+      final tempEmployee = doc.data() as Map<String, dynamic>;
+      final tempObject = EmployeeModel.fromJson(tempEmployee);
+
+      if ("${tempObject.employeeType}" == "cashier") {
+        tempCashiers.add(tempObject);
+      } else {
+        tempTopups.add(tempObject);
+      }
+    }
+
+    // Calculate total of topup wallets
+    topupWalletsTotal = 0;
+    for (var item in tempTopups) {
+      topupWalletsTotal += item.walletBalance ?? 0;
+    }
+    print("Topup Total: ${cashierWalletsTotal}");
+
+    // Calculate total of cashier wallets
+    cashierWalletsTotal = 0;
+    for (var item in tempCashiers) {
+      cashierWalletsTotal += item.walletBalance ?? 0;
+    }
+    print("Cashier Total: ${cashierWalletsTotal}");
+
+    /// Customers Wallet Total
+
+    for (var doc in customerSnap.docs) {
+      final tempCustomer = doc.data() as Map<String, dynamic>;
+      final tempObject = CustomerModel.fromJson(tempCustomer);
+
+      tempCustomers.add(tempObject);
+    }
+
+    // Calculate total of user wallets
+    customerWalletsTotal = 0;
+    for (var item in tempCustomers) {
+      print("length");
+      print(tempCustomers.length);
+      customerWalletsTotal += item.walletBalance ?? 0;
+      customerWalletsTotal = customerWalletsTotal.roundToDouble();
+    }
+    print("Customer Total: ${customerWalletsTotal}");
   }
 
   void setTopupAmt(String? val) {

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mokpos/app/view/cashier_screens/topup_screen.dart';
+import 'package:mokpos/app/view/topup_screens/topup_screen.dart';
 import 'package:mokpos/app/view_model/user/user_view_model.dart';
 import 'package:mokpos/base/constant.dart';
 import 'package:mokpos/widgets/back_button_black.dart';
@@ -64,18 +64,31 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                               child: ListTile(
                                 // leading: Text(currentEmployee.employeeId!),
                                 title: Text("${currentEmployee.employeeId}"),
-                                subtitle: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                subtitle: Column(
                                   children: [
-                                    Text("${currentEmployee.name}"),
-                                    Text(
-                                      "\$${currentEmployee.walletBalance}",
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                        // fontSize: 22,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("${currentEmployee.name}"),
+                                        Text(
+                                          "\$${currentEmployee.walletBalance?.roundToDouble()}",
+                                          style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                            // fontSize: 22,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("CODE:"),
+                                        Text("${currentEmployee.employeeCode}"),
+                                      ],
                                     ),
                                   ],
                                 ),

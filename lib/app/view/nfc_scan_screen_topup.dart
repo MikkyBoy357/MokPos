@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:mokpos/app/view_model/auth/shop/shop_view_model.dart';
+import 'package:mokpos/app/view_model/shop/shop_view_model.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:provider/provider.dart';

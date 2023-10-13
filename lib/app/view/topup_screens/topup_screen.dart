@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mokpos/app/view/nfc_scan_screen_topup.dart';
 import 'package:mokpos/app/view_model/customer/customer_view_model.dart';
+import 'package:mokpos/widgets/employee_drawer.dart';
 import 'package:mokpos/widgets/number_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +23,10 @@ class _TopupScreenState extends State<TopupScreen> {
       builder: (context, customerViewModel, _) {
         return Scaffold(
           appBar: AppBar(
+            // automaticallyImplyLeading: false,
             title: Text("Topup Account"),
           ),
+          drawer: EmployeeDrawer(),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mokpos/app/view_model/auth/shop/shop_view_model.dart';
+import 'package:mokpos/app/view_model/shop/shop_view_model.dart';
 import 'package:mokpos/base/constant.dart';
 import 'package:mokpos/widgets/back_button_black.dart';
 import 'package:provider/provider.dart';
