@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mokpos/app/model/dashboard_item_model.dart';
+import 'package:mokpos/app/view_model/user/user_view_model.dart';
 import 'package:mokpos/widgets/bottom_bar.dart';
 import 'package:mokpos/widgets/my_drawer.dart';
+import 'package:provider/provider.dart';
 
 import '../../../base/constant.dart';
 
@@ -11,32 +13,56 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // automaticallyImplyLeading: false,
-        title: Text("Dashboard"),
-      ),
-      drawer: MyDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            SizedBox(height: 40),
-            ListView.separated(
-              itemCount: dasboardItems.length,
-              shrinkWrap: true,
-              separatorBuilder: (context, index) => SizedBox(height: 20),
-              itemBuilder: (context, index) {
-                return DashboardCard(
-                  title: dasboardItems[index].title,
-                  subtitle: dasboardItems[index].subtitle,
-                  svgPath: dasboardItems[index].svgPath,
-                );
-              },
+    return Consumer<UserViewModel>(
+      builder: (context, userViewModel, _) {
+        return Scaffold(
+          appBar: AppBar(
+            // automaticallyImplyLeading: false,
+            title: Text("Dashboard"),
+          ),
+          drawer: MyDrawer(),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              children: [
+                SizedBox(height: 40),
+                ListView.separated(
+                  itemCount: dasboardItems.length,
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) => SizedBox(height: 20),
+                  itemBuilder: (context, index) {
+                    String mySubtitle = "";
+                    if (index == 0) {
+                      mySubtitle =
+                          "\$${userViewModel.user?.walletBalance}".asAmount();
+                    } else if (index == 1) {
+                      mySubtitle =
+                          "\$${userViewModel.user?.principalWalletBalance}"
+                              .asAmount();
+                    } else if (index == 2) {
+                      mySubtitle =
+                          "\$${userViewModel.topupWalletsTotal}".asAmount();
+                    } else if (index == 3) {
+                      mySubtitle =
+                          "\$${userViewModel.cashierWalletsTotal}".asAmount();
+                    } else if (index == 4) {
+                      mySubtitle =
+                          "\$${userViewModel.customerWalletsTotal}".asAmount();
+                    } else {
+                      mySubtitle = "ERROR";
+                    }
+                    return DashboardCard(
+                      title: mySubtitle,
+                      subtitle: dasboardItems[index].subtitle,
+                      svgPath: dasboardItems[index].svgPath,
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

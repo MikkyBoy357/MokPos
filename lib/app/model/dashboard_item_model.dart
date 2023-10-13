@@ -15,17 +15,27 @@ class DashboardItemModel {
 List<DashboardItemModel> dasboardItems = [
   DashboardItemModel(
     title: "5 000 000 FCFA",
-    subtitle: "Solde Recharge",
+    subtitle: "Principal Wallet",
+    svgPath: "${Constant.assetSvgPath}cashier.svg",
+  ),
+  DashboardItemModel(
+    title: "5 000 000 FCFA",
+    subtitle: "Primary Wallet (for topup)",
     svgPath: "${Constant.assetSvgPath}cashier.svg",
   ),
   DashboardItemModel(
     title: "1 000 000 FCFA",
-    subtitle: "Solde Achat (POS)",
+    subtitle: "Total Topup Wallets",
+    svgPath: "${Constant.assetSvgPath}shop.svg",
+  ),
+  DashboardItemModel(
+    title: "1 000 000 FCFA",
+    subtitle: "Total Cashier Wallets",
     svgPath: "${Constant.assetSvgPath}shop.svg",
   ),
   DashboardItemModel(
     title: "4 000 000 FCFA",
-    subtitle: "Solde Carte Client",
+    subtitle: "Total Customer Wallets",
     svgPath: "${Constant.assetSvgPath}avatar.svg",
   ),
 ];

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mokpos/app/view/owner_screens/dashboard_screen.dart';
 
 import '../../widgets/bottom_bar.dart';
+import 'owner_screens/employee_list_screen.dart';
 
 // ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
@@ -14,9 +15,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedItem = 1;
+  int _selectedItem = 0;
   late String uid;
-  PageController _pageController = PageController(initialPage: 1);
+  PageController _pageController = PageController(initialPage: 0);
   @override
   void initState() {
     // TODO: implement initState
@@ -35,9 +36,8 @@ class _MainScreenState extends State<MainScreen> {
           });
         },
         children: [
-          Text("Checking"),
           DashboardScreen(),
-          Text("Customers"),
+          EmployeeListScreen(),
         ],
         controller: _pageController,
       ),

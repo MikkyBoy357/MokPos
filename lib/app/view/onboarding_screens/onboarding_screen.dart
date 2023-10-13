@@ -17,6 +17,7 @@ class OnboardingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         // leading: BackButton(),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,

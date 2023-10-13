@@ -2,14 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mokpos/app/view/cashier_screens/cashier_main_screen.dart';
+import 'package:mokpos/app/view/onboarding_screens/onboarding_screen.dart';
 import 'package:mokpos/app/view_model/user/user_view_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../base/constant.dart';
 import '../../../../base/validation.dart';
 import '../../../../services/auth_service.dart';
+import '../../../../widgets/loading_dialog.dart';
 import '../../../view/main_screen.dart';
 
 class LoginViewModel extends ChangeNotifier {
+  bool isLoading = false;
+
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validate = false;
@@ -18,6 +23,16 @@ class LoginViewModel extends ChangeNotifier {
   FocusNode emailFN = FocusNode();
   FocusNode passFN = FocusNode();
   AuthService auth = AuthService();
+
+  void startLoading(BuildContext context) {
+    isLoading = true;
+    notifyListeners();
+  }
+
+  void stopLoading(BuildContext context) {
+    isLoading = false;
+    notifyListeners();
+  }
 
   login(BuildContext context, String userType) async {
     FormState form = formKey.currentState!;
@@ -62,6 +77,30 @@ class LoginViewModel extends ChangeNotifier {
 
     Provider.of<UserViewModel>(context, listen: false).getUser();
     // }
+  }
+
+  Future<void> logout(BuildContext context) async {
+    startLoading(context);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return LoadingDialog();
+      },
+    );
+
+    await AuthService().logOut(context);
+
+    stopLoading(context);
+    Navigator.of(context).pop(context);
+    notifyListeners();
+
+    Constant.navigatePush(
+      context,
+      WillPopScope(
+        onWillPop: () async => false,
+        child: OnboardingScreen(),
+      ),
+    );
   }
 
   forgotPassword(BuildContext context) async {

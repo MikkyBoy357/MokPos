@@ -29,14 +29,18 @@ class ErrorDialog extends StatelessWidget {
 }
 
 class SuccessDialog extends StatelessWidget {
+  final String title;
   final String text;
 
-  const SuccessDialog({Key? key, this.text = "Request was successful"})
-      : super(key: key);
+  const SuccessDialog({
+    Key? key,
+    this.title = "Success",
+    this.text = "Request was successful",
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Success"),
+      title: Text(title),
       content: Text(text),
       actions: [
         ElevatedButton(
@@ -44,6 +48,38 @@ class SuccessDialog extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
+        ),
+      ],
+    );
+  }
+}
+
+class ConfirmDialog extends StatelessWidget {
+  final String title;
+  final String text;
+  final VoidCallback? onYes;
+
+  const ConfirmDialog({
+    Key? key,
+    this.title = "Confirm",
+    this.text = "",
+    this.onYes,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(title),
+      content: Text(text),
+      actions: [
+        ElevatedButton(
+          child: Text("NO"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        ElevatedButton(
+          child: Text("YES"),
+          onPressed: onYes,
         ),
       ],
     );

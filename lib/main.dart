@@ -82,31 +82,31 @@ class MyApp extends StatelessWidget {
   buildHome() {
     return Consumer<UserViewModel>(
       builder: (context, userViewModel, _) {
-        return StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-            print("Checking Snapshot data => ${snapshot}");
-            if (snapshot.hasData) {
-              print("Snapshot has data");
-              print(snapshot);
+        return Builder(
+          // stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (BuildContext context) {
+            // print("Checking Snapshot data => ${snapshot}");
+            if (FirebaseAuth.instance.currentUser != null) {
+              print("User is not null");
+              // print(snapshot);
               return FutureBuilder(
                 future: userViewModel.getUser(),
                 builder: (context, AsyncSnapshot dataSnapShot) {
                   if (dataSnapShot.connectionState == ConnectionState.waiting) {
                     return OnboardingScreen();
                   } else {
-                    return Builder(builder: (context) {
-                      print(
-                          "======UserType====> ${userViewModel.user?.userType}");
+                    // return Builder(builder: (context) {
+                    //   print(
+                    //       "======UserType====> ${userViewModel.user?.userType}");
 
-                      if (userViewModel.user?.userType == "owner") {
-                        // Constant.navigatePushReplacement(context, MainScreen());
-                        return MainScreen();
-                      } else {
-                        // Constant.navigatePushReplacement(context, CashierMainScreen());
-                        return CashierMainScreen();
-                      }
-                    });
+                    if (userViewModel.user?.userType == "owner") {
+                      // Constant.navigatePushReplacement(context, MainScreen());
+                      return MainScreen();
+                    } else {
+                      // Constant.navigatePushReplacement(context, CashierMainScreen());
+                      return CashierMainScreen();
+                    }
+                    // });
                   }
                 },
               );

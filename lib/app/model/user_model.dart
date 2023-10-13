@@ -6,6 +6,7 @@ class UserModel {
   String? phone;
   num? walletBalance;
   String? userType;
+  num? principalWalletBalance;
 
   UserModel({
     this.id,
@@ -13,6 +14,7 @@ class UserModel {
     this.phone,
     this.walletBalance,
     this.userType,
+    this.principalWalletBalance,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class UserModel {
     phone = json['phone'];
     walletBalance = json['walletBalance'];
     userType = json['userType'];
+    principalWalletBalance = json['principalWalletBalance'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +33,7 @@ class UserModel {
     data['phone'] = this.phone;
     data['walletBalance'] = this.walletBalance;
     data['userType'] = this.userType;
+    data['principalWalletBalance'] = this.principalWalletBalance;
 
     return data;
   }
