@@ -10,8 +10,8 @@ class PasswordField extends StatefulWidget {
   const PasswordField({
     Key? key,
     required this.controller,
-    this.hintText = 'At least 8 characters',
-    this.title = 'Password',
+    this.hintText = 'Au moins 8 characteres',
+    this.title = 'Mot de passe',
     this.textInputType = TextInputType.number,
     this.onChanged,
   }) : super(key: key);

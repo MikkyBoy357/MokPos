@@ -29,7 +29,7 @@ class ChooseLoginScreen extends StatelessWidget {
           ],
         ),
         title: Text(
-          "Choose Login",
+          "Type de connexion",
           style: TextStyle(
             color: MyColors().myGreen,
             fontWeight: FontWeight.w500,
@@ -45,7 +45,7 @@ class ChooseLoginScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Welcome to MokPOS!",
+                  "Welcome to Cashless POS!",
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -75,7 +75,7 @@ class ChooseLoginScreen extends StatelessWidget {
             ),
             // Spacer(),
             CustomButton(
-              label: "Login as Owner",
+              label: "Connexion Admin",
               prefixWidget: Icon(
                 CupertinoIcons.profile_circled,
                 color: Colors.white,
@@ -89,7 +89,7 @@ class ChooseLoginScreen extends StatelessWidget {
             Text("or"),
             SizedBox(height: 10),
             CustomButton(
-              label: "Login as Employee",
+              label: "Connexion Agent",
               prefixWidget: SvgPicture.asset(
                 "${Constant.assetSvgPath}employees.svg",
                 height: 30,

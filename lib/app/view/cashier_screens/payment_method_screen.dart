@@ -13,7 +13,7 @@ class PaymentMethodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Payment Method"),
+        title: Text("Methode de paiement"),
       ),
       body: Consumer<ShopViewModel>(
         builder: (context, shopViewModel, _) {
@@ -30,9 +30,9 @@ class PaymentMethodScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Total Bill:"),
+                        Text("Total facture:"),
                         Text(
-                          "\$${shopViewModel.totalPrice}",
+                          "CFA ${shopViewModel.totalPrice}",
                           style: TextStyle(
                             color: Colors.green,
                             fontSize: 20,

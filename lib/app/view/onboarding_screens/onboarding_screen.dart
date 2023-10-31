@@ -22,11 +22,10 @@ class OnboardingScreen extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlackIconButton(
-              child: Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: SvgPicture.asset("${Constant.assetSvgPath}union.svg"),
-              ),
+            SvgPicture.asset(
+              "${Constant.assetSvgPath}cashless_logo.svg",
+              height: 30,
+              width: 50,
             ),
             SizedBox(width: 10),
             Text(
@@ -70,14 +69,14 @@ class OnboardingScreen extends StatelessWidget {
             ),
             // Spacer(),
             CustomButton(
-              label: "Create new account",
+              label: "Créer un compte",
               onTap: () {
                 Constant.navigatePush(context, SignUpScreen());
               },
             ),
             SizedBox(height: 15),
             CustomOutlineButton(
-              label: "Login",
+              label: "Se connecter",
               onTap: () {
                 Constant.navigatePush(context, ChooseLoginScreen());
               },

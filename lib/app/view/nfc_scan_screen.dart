@@ -181,7 +181,7 @@ class NfcScanScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$${shopViewModel.totalPrice}",
+                  "CFA ${shopViewModel.totalPrice}",
                   style: TextStyle(
                     // color: Colors.white,
                     fontSize: 22,

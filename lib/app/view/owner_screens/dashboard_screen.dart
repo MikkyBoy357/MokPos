@@ -40,22 +40,23 @@ class DashboardScreen extends StatelessWidget {
                           String mySubtitle = "";
                           if (index == 0) {
                             mySubtitle =
-                                "\$${userViewModel.user?.walletBalance}"
+                                "CFA ${userViewModel.user?.walletBalance}"
                                     .asAmount();
                           } else if (index == 1) {
                             mySubtitle =
-                                "\$${userViewModel.user?.principalWalletBalance}"
+                                "CFA ${userViewModel.user?.principalWalletBalance}"
                                     .asAmount();
                           } else if (index == 2) {
-                            mySubtitle = "\$${userViewModel.topupWalletsTotal}"
-                                .asAmount();
+                            mySubtitle =
+                                "CFA ${userViewModel.topupWalletsTotal}"
+                                    .asAmount();
                           } else if (index == 3) {
                             mySubtitle =
-                                "\$${userViewModel.cashierWalletsTotal}"
+                                "CFA ${userViewModel.cashierWalletsTotal}"
                                     .asAmount();
                           } else if (index == 4) {
                             mySubtitle =
-                                "\$${userViewModel.customerWalletsTotal}"
+                                "CFA ${userViewModel.customerWalletsTotal}"
                                     .asAmount();
                           } else {
                             mySubtitle = "ERROR";
@@ -97,7 +98,7 @@ class DashboardCard extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.blue,
+        color: Colors.black,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

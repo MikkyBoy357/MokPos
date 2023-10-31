@@ -50,7 +50,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
       builder: (context, userViewModel, _) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("Register New Employee"),
+            title: Text("Enregistrer un Agent"),
           ),
           // drawer: MyDrawer(),
           body: Padding(
@@ -75,13 +75,15 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
                     children: [
                       CustomSmallButton(
                         isSelected: userViewModel.newEmpType == "cashier",
-                        label: "Cashier",
+                        label: "Point de vente",
+                        fontSize: 12,
                         icon: Icons.money,
                         onTap: () => userViewModel.setEmpType("cashier"),
                       ),
                       CustomSmallButton(
                         isSelected: userViewModel.newEmpType == "topup",
-                        label: "Topup",
+                        label: "Point de Recharge",
+                        fontSize: 12,
                         icon: Icons.wifi,
                         onTap: () => userViewModel.setEmpType("topup"),
                       ),
@@ -95,7 +97,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: MyTextButton(
             margin: EdgeInsets.symmetric(horizontal: 20),
-            label: "PROCEED",
+            label: "ENREGISTRER",
             backgroundColor: checkFields() ? Colors.green : Colors.grey[600],
             onTap: () {
               if (userViewModel.email.isNotEmpty &&
@@ -125,8 +127,8 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
       child: Column(
         children: [
           NameTextField(
-            title: "Name",
-            hintText: "John Doe",
+            title: "NOM",
+            hintText: "Martin MBAPPE",
             controller: nameController,
             onChanged: (String val) {
               viewModel.setName(val);
@@ -141,7 +143,7 @@ class _AddNewEmployeeScreenState extends State<AddNewEmployeeScreen> {
           ),
           SizedBox(height: 20),
           NumberTextField(
-            title: "Phone",
+            title: "Tel",
             hintText: "12378900",
             controller: phoneController,
             onChanged: (String val) {

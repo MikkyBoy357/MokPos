@@ -24,8 +24,10 @@ class NumberTextField extends StatelessWidget {
       children: [
         Text(
           title,
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
+        SizedBox(height: 10),
         CustomTextField(
           hintText: hintText,
           controller: controller,

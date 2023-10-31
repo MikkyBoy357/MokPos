@@ -22,13 +22,14 @@ import '../../../nfc_model/record.dart';
 import '../../../nfc_model/write_record.dart';
 
 class CustomerViewModel extends ChangeNotifier {
+  CustomerModel? selectedCustomer;
   WalletService walletService = WalletService();
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool validate = false;
   bool loading = false;
-  String email = "", name = "";
+  String email = "", name = "", address = "", zone = "";
 
   NfcTag? tag;
   Object? tech;
@@ -47,6 +48,10 @@ class CustomerViewModel extends ChangeNotifier {
   Iterable<WriteRecord> myRecordsIterable = [];
 
   bool isLoading = false;
+
+  void setSelectedCustomer(CustomerModel customer) {
+    selectedCustomer = customer;
+  }
 
   Future<void> checkTagForId(BuildContext context, NfcTag? _tag,
       {required String actionType}) async {
@@ -306,6 +311,16 @@ class CustomerViewModel extends ChangeNotifier {
 
   void setEmail(val) {
     email = val;
+    notifyListeners();
+  }
+
+  void setAddress(val) {
+    address = val;
+    notifyListeners();
+  }
+
+  void setZone(val) {
+    zone = val;
     notifyListeners();
   }
 

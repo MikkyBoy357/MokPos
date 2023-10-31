@@ -7,7 +7,7 @@ class EmailTextField extends StatelessWidget {
   const EmailTextField({
     Key? key,
     required this.controller,
-    this.title = 'Email Address',
+    this.title = 'Addresse Email',
     this.hintText = 'myemail@gmail.com',
     this.onChanged,
   }) : super(key: key);

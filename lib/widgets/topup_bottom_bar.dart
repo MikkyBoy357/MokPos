@@ -23,8 +23,8 @@ class TopupBottomBar extends StatelessWidget {
           icon: Icon(Icons.home),
         ),
         BottomNavigationBarItem(
-          label: "Dashboard",
-          icon: Icon(Icons.shopping_cart),
+          label: "Ajouter Client",
+          icon: Icon(CupertinoIcons.profile_circled),
         ),
         // BottomNavigationBarItem(
         //   label: "Employees",

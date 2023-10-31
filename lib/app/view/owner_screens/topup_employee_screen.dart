@@ -39,7 +39,7 @@ class _TopupEmployeeScreenState extends State<TopupEmployeeScreen> {
               children: [
                 SizedBox(height: 20),
                 NumberTextField(
-                  title: "Topup Amount (Min: \$${userViewModel.minTopup})",
+                  title: "Topup Amount (Min: CFA ${userViewModel.minTopup})",
                   controller: topupAmtController,
                   onChanged: (val) {
                     userViewModel.setTopupAmt(val);
@@ -62,7 +62,7 @@ class _TopupEmployeeScreenState extends State<TopupEmployeeScreen> {
                     return ConfirmDialog(
                       title: "Confirm Topup",
                       text:
-                          "Do you want to proceed with topup \$${userViewModel.minTopup} for Employee ${userViewModel.topupEmployee?.name?.toUpperCase()} with ID: ${userViewModel.topupEmployee?.employeeId}",
+                          "Do you want to proceed with topup CFA ${userViewModel.minTopup} for Employee ${userViewModel.topupEmployee?.name?.toUpperCase()} with ID: ${userViewModel.topupEmployee?.employeeId}",
                       onYes: () async {
                         Navigator.of(context).pop(context);
                         await userViewModel.makeTopupForEmployee(context);

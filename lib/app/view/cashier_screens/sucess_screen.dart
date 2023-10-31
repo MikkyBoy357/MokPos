@@ -69,7 +69,7 @@ class SuccessScreen extends StatelessWidget {
                 MyTextButton(
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   label:
-                      "Balance : \$${customerViewModel.customerData?.walletBalance!.roundToDouble()}",
+                      "Balance : CFA ${customerViewModel.customerData?.walletBalance!.roundToDouble()}",
                   backgroundColor: Colors.white,
                   textColor: Colors.black,
                 ),

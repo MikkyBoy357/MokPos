@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/view/cashier_screens/cashier_home_screen.dart';
+import 'package:mokpos/app/view/cashier_screens/customer_list_screen.dart';
 import 'package:mokpos/app/view/owner_screens/dashboard_screen.dart';
+import 'package:mokpos/app/view/products_screen.dart';
 
 import '../../widgets/bottom_bar.dart';
 import 'owner_screens/employee_list_screen.dart';
@@ -38,6 +41,8 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           DashboardScreen(),
           EmployeeListScreen(),
+          CustomerListScreen(),
+          ProductsScreen(),
         ],
         controller: _pageController,
       ),

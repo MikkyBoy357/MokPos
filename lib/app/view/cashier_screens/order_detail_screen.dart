@@ -16,7 +16,7 @@ class OrderDetailScreen extends StatelessWidget {
       builder: (context, shopViewModel, _) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("Order Details"),
+            title: Text("Details commande"),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -50,7 +50,7 @@ class OrderDetailScreen extends StatelessWidget {
                                 Text("${orderItem.name}"),
                               ],
                             ),
-                            Text("\$${orderItem.price! * orderItem.count!}")
+                            Text("CFA ${orderItem.price! * orderItem.count!}")
                           ],
                         ),
                         SizedBox(height: 10),
@@ -81,15 +81,15 @@ class OrderDetailScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Subtotal:"),
-                      Text("\$${shopViewModel.totalPrice}"),
+                      Text("Total:"),
+                      Text("CFA ${shopViewModel.totalPrice}"),
                     ],
                   ),
                   SizedBox(height: 10),
                   MyTextButton(
                     // margin: EdgeInsets.symmetric(horizontal: 16),
                     backgroundColor: Colors.green,
-                    label: "Place Order",
+                    label: "PAYER",
                     onTap: () {
                       Constant.navigatePush(context, PaymentMethodScreen());
                     },

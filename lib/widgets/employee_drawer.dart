@@ -68,29 +68,29 @@ class EmployeeDrawer extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Container(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100]!.withOpacity(0.1),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Branch 1",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            Icon(
-                              CupertinoIcons.chevron_down,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   height: 50,
+                      //   width: MediaQuery.of(context).size.width,
+                      //   padding: EdgeInsets.symmetric(horizontal: 10),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.grey[100]!.withOpacity(0.1),
+                      //   ),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text(
+                      //         "Branch 1",
+                      //         style: TextStyle(
+                      //           color: Colors.white,
+                      //         ),
+                      //       ),
+                      //       Icon(
+                      //         CupertinoIcons.chevron_down,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       SizedBox(height: 10),
                       Divider(thickness: 0.1),
                       SizedBox(height: 10),

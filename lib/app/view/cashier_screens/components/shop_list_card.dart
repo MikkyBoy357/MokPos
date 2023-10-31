@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mokpos/app/view/product_model.dart';
 
 import '../../../../widgets/back_button_black.dart';
 import '../../../model/shop_item_model.dart';
 
 class ShopListCard extends StatelessWidget {
-  final ShopItemModel shopItem;
+  final bool showAdd;
+  final ProductModel shopItem;
   final VoidCallback? onAdd;
   final VoidCallback? onTap;
 
   const ShopListCard({
     super.key,
+    this.showAdd = true,
     required this.shopItem,
     required this.onAdd,
     required this.onTap,
@@ -37,7 +40,7 @@ class ShopListCard extends StatelessWidget {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    shopItem.imageUrl!,
+                    shopItem.image!,
                   ),
                 ),
               ),
@@ -54,7 +57,7 @@ class ShopListCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$${shopItem.price}",
+                  "CFA ${shopItem.price}",
                   style: TextStyle(
                     color: Colors.green,
                     fontWeight: FontWeight.bold,
@@ -63,11 +66,14 @@ class ShopListCard extends StatelessWidget {
               ],
             ),
             Spacer(),
-            BlackIconButton(
-              onTap: onAdd,
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
+            Visibility(
+              visible: showAdd,
+              child: BlackIconButton(
+                onTap: onAdd,
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],

@@ -143,7 +143,7 @@ class NfcScanScreenRegisterCustomer extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$${customerViewModel.topupAmt}",
+                  "CFA ${customerViewModel.topupAmt}",
                   style: TextStyle(
                     // color: Colors.white,
                     fontSize: 22,

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../widgets/my_drawer.dart';
 import '../owner_screens/history_modal_sheet.dart';
+import 'customer_detail_screen.dart';
 import 'sucess_screen.dart';
 import '../topup_screens/topup_screen.dart';
 
@@ -31,16 +32,7 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
       builder: (context, customerViewModel, _) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("Customers"),
-            actions: [
-              MyTextButton(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                onTap: () {
-                  Constant.navigatePush(context, TopupScreen());
-                },
-                label: "TopUp User",
-              ),
-            ],
+            title: Text("Mes clients"),
           ),
           drawer: MyDrawer(),
           body: Column(
@@ -101,18 +93,26 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
                                 var currentCustomer =
                                     customerViewModel.customersList[index];
 
-                                return Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(currentCustomer.name!),
-                                        Icon(Icons.chevron_right)
-                                      ],
-                                    ),
-                                    Divider(thickness: 0.5),
-                                  ],
+                                return InkWell(
+                                  onTap: () {
+                                    customerViewModel
+                                        .setSelectedCustomer(currentCustomer);
+                                    Constant.navigatePush(
+                                        context, CustomerDetailScreen());
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(currentCustomer.name!),
+                                          Icon(Icons.chevron_right)
+                                        ],
+                                      ),
+                                      Divider(thickness: 0.5),
+                                    ],
+                                  ),
                                 );
                               },
                             );
@@ -131,7 +131,7 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: MyTextButton(
             margin: EdgeInsets.symmetric(horizontal: 20),
-            label: "Add New Customer",
+            label: "Ajoutr un client",
             backgroundColor: Colors.green,
             onTap: () {
               Constant.navigatePush(context, AddCustomerScreen());

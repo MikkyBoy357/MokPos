@@ -43,7 +43,7 @@ class _CashierMainScreenState extends State<CashierMainScreen> {
         ],
         controller: _pageController,
       ),
-      bottomNavigationBar: BottomBar(
+      bottomNavigationBar: CashierBottomBar(
         currentIndex: _selectedItem,
         onTap: (index) {
           setState(

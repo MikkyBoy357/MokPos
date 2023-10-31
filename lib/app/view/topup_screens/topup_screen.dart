@@ -24,7 +24,7 @@ class _TopupScreenState extends State<TopupScreen> {
         return Scaffold(
           appBar: AppBar(
             // automaticallyImplyLeading: false,
-            title: Text("Topup Account"),
+            title: Text("Recharger un client"),
           ),
           drawer: EmployeeDrawer(),
           body: Padding(
@@ -33,7 +33,8 @@ class _TopupScreenState extends State<TopupScreen> {
               children: [
                 SizedBox(height: 20),
                 NumberTextField(
-                  title: "Topup Amount (Min: \$${customerViewModel.minTopup})",
+                  title:
+                      "Montant à recharger (Min: CFA ${customerViewModel.minTopup})",
                   controller: topupAmtController,
                   onChanged: (val) {
                     customerViewModel.setTopupAmt(val);
@@ -46,7 +47,7 @@ class _TopupScreenState extends State<TopupScreen> {
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: MyTextButton(
             margin: EdgeInsets.symmetric(horizontal: 20),
-            label: "PROCEED",
+            label: "Recharger",
             backgroundColor: Colors.green,
             onTap: () {
               if (customerViewModel.topupAmt >= customerViewModel.minTopup) {

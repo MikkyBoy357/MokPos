@@ -82,7 +82,7 @@ class HistoryTransactionsScreen extends StatelessWidget {
                     children: [
                       Text("Sunday, 02 August 2020"),
                       Text(
-                        "\$290.99",
+                        "CFA 290.99",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -110,7 +110,7 @@ class HistoryTransactionsScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "\$20.99",
+                                  "CFA 20.99",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),

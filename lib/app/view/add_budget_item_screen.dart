@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:mokpos/app/model/shop_item_model.dart';
-import 'package:mokpos/app/view/cashier_screens/add_customer_screen.dart';
-import 'package:mokpos/app/view/cashier_screens/customer_list_screen.dart';
-import 'package:mokpos/app/view/cashier_screens/register_client_nfc_screen.dart';
-import 'package:mokpos/app/view_model/shop/shop_view_model.dart';
+import 'package:mokpos/app/view/cashier_screens/components/shop_list_card.dart';
+import 'package:mokpos/app/view_model/budget_view_model.dart';
 import 'package:mokpos/base/constant.dart';
-import 'package:mokpos/widgets/back_button_black.dart';
 import 'package:provider/provider.dart';
 
-import '../../../widgets/my_drawer.dart';
-import '../owner_screens/history_modal_sheet.dart';
-import 'components/shop_grid_card.dart';
-import 'components/shop_list_card.dart';
-import 'order_detail_screen.dart';
-import 'sucess_screen.dart';
+import '../view_model/shop/shop_view_model.dart';
+import 'cashier_screens/components/shop_grid_card.dart';
 
-class CashierHomeScreen extends StatefulWidget {
-  const CashierHomeScreen({super.key});
+class AddBudgetItemScreen extends StatefulWidget {
+  const AddBudgetItemScreen({super.key});
 
   @override
-  State<CashierHomeScreen> createState() => _CashierHomeScreenState();
+  State<AddBudgetItemScreen> createState() => _AddBudgetItemScreenState();
 }
 
-class _CashierHomeScreenState extends State<CashierHomeScreen> {
+class _AddBudgetItemScreenState extends State<AddBudgetItemScreen> {
   bool isGrid = false;
 
   void changeGrid() {
@@ -32,13 +24,12 @@ class _CashierHomeScreenState extends State<CashierHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ShopViewModel>(
-      builder: (context, shopViewModel, _) {
+    return Consumer2<ShopViewModel, BudgetViewModel>(
+      builder: (context, shopViewModel, budgetViewModel, _) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("Point de vente"),
+            title: Text("Add product to budget"),
           ),
-          drawer: MyDrawer(),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -79,8 +70,9 @@ class _CashierHomeScreenState extends State<CashierHomeScreen> {
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        Builder(
-                          builder: (context) {
+                        FutureBuilder(
+                          future: shopViewModel.getProducts(),
+                          builder: (context, AsyncSnapshot snap) {
                             if (isGrid) {
                               return GridView.builder(
                                 physics: NeverScrollableScrollPhysics(),
@@ -100,6 +92,7 @@ class _CashierHomeScreenState extends State<CashierHomeScreen> {
                                   return ShopGridCard(
                                     onAdd: () {
                                       shopViewModel.addItemToCart(item);
+                                      budgetViewModel.addItemToCart(item);
                                     },
                                     shopItem: item,
                                     onTap: () {},
@@ -120,6 +113,7 @@ class _CashierHomeScreenState extends State<CashierHomeScreen> {
                                   return ShopListCard(
                                     onAdd: () {
                                       shopViewModel.addItemToCart(item);
+                                      budgetViewModel.addItemToCart(item);
                                     },
                                     shopItem: shopViewModel.productsList[index],
                                     onTap: () {},
@@ -143,7 +137,9 @@ class _CashierHomeScreenState extends State<CashierHomeScreen> {
           floatingActionButton: InkWell(
             onTap: () {
               if (shopViewModel.cartItems.isNotEmpty) {
-                Constant.navigatePush(context, OrderDetailScreen());
+                // Constant.navigatePush(context, OrderDetailScreen());
+                budgetViewModel.generateBudgetItems(shopViewModel.cartItems);
+                Constant.backToPrev(context);
               }
             },
             child: Container(

@@ -101,12 +101,15 @@ class CustomSmallButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final VoidCallback? onTap;
+  final double? fontSize;
+
   const CustomSmallButton({
     super.key,
     required this.isSelected,
     required this.label,
     required this.icon,
     this.onTap,
+    this.fontSize,
   });
 
   @override
@@ -136,7 +139,7 @@ class CustomSmallButton extends StatelessWidget {
                       fontSize: 14,
                       color: isSelected ? Colors.white : Color(0xFF2A3256),
                       fontWeight: FontWeight.w600,
-                    ),
+                    ).copyWith(fontSize: fontSize),
                   ),
                 ],
               ),

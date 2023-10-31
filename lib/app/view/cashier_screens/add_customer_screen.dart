@@ -25,6 +25,8 @@ class AddCustomerScreen extends StatefulWidget {
 class _AddCustomerScreenState extends State<AddCustomerScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController zoneController = TextEditingController();
 
   bool isGrid = false;
 
@@ -56,7 +58,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: MyTextButton(
             margin: EdgeInsets.symmetric(horizontal: 20),
-            label: "PROCEED",
+            label: "ENREGISTRER",
             backgroundColor: Colors.green,
             onTap: () {
               if (customerViewModel.email.isNotEmpty &&
@@ -80,8 +82,8 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
       child: Column(
         children: [
           NameTextField(
-            title: "Name",
-            hintText: "John Doe",
+            title: "NOM",
+            hintText: "DOSSA Jean",
             controller: nameController,
             onChanged: (String val) {
               viewModel.setName(val);
@@ -92,6 +94,33 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
             controller: emailController,
             onChanged: (String val) {
               viewModel.setEmail(val);
+            },
+          ),
+          SizedBox(height: 20),
+          PhoneTextField(
+            title: "Tel (+229)",
+            hintText: "97090909",
+            controller: emailController,
+            onChanged: (String val) {
+              viewModel.setEmail(val);
+            },
+          ),
+          SizedBox(height: 20),
+          NameTextField(
+            title: "Address",
+            hintText: "Entrer une adresse",
+            controller: addressController,
+            onChanged: (String val) {
+              viewModel.setAddress(val);
+            },
+          ),
+          SizedBox(height: 20),
+          NameTextField(
+            title: "Zone",
+            hintText: "Entrer une zone",
+            controller: zoneController,
+            onChanged: (String val) {
+              viewModel.setZone(val);
             },
           ),
         ],

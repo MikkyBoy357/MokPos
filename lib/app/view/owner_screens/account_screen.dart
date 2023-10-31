@@ -49,34 +49,34 @@ class AccountScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 30),
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "MyStoreName",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Icon(Icons.chevron_right),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Divider(thickness: 0.3),
-                      ],
-                    );
-                  },
-                ),
+                // ListView.builder(
+                //   physics: NeverScrollableScrollPhysics(),
+                //   shrinkWrap: true,
+                //   itemCount: 5,
+                //   itemBuilder: (context, index) {
+                //     return Column(
+                //       children: [
+                //         Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           children: [
+                //             Text(
+                //               "MyStoreName",
+                //               style: TextStyle(
+                //                 fontSize: 17,
+                //                 fontWeight: FontWeight.w600,
+                //               ),
+                //             ),
+                //             Icon(Icons.chevron_right),
+                //           ],
+                //         ),
+                //         SizedBox(
+                //           height: 5,
+                //         ),
+                //         Divider(thickness: 0.3),
+                //       ],
+                //     );
+                //   },
+                // ),
                 Text(
                   "MokPOS v1.0.0",
                   style: TextStyle(
